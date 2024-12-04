@@ -1,7 +1,5 @@
 First type sudo apt-get install libpam-pwquality to install Password Quality Checking Library
-
 Then type sudo vim /etc/pam.d/common-password
-
 Find this line. password		requisite		pam_deny.so or
  Add this to the end of that line `minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root`
 4.1 The line should now look like this - password  requisite     pam_pwquality.so  retry=3 minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
@@ -24,6 +22,7 @@ Lastly type chage -l your_new_username to check if the password rules are workin
 let's create sudo.log 
 Let's Configuring Sudoers Group
 First type sudo nano /etc/sudoers to go the sudoers file
+CODE:
 Now edit your sudoers file to look like the following by adding in all of the defaults in the image below -
 ******************************************************************************************************************
 Defaults	env_reset
@@ -35,11 +34,13 @@ Defaults	logfile="/var/log/sudo/sudo.log"
 Defaults	log_input, log_output
 Defaults	requiretty
 ******************************************************************************************************************
+end
 let' s Crontab Configuation
 Then type apt-get install -y net-tools to install the netstat tools
 Then type cd /usr/local/bin/
 Then type touch monitoring.sh
 Lastly type chmod 777 monitoring.sh
+CODE:
 Copy this text (To copy the text below, hover with your mouse to the right corner of the text below and a copy icon will appear).
 ******************************************************************************************************************
 #!/bin/bash
@@ -73,6 +74,7 @@ wall "	#Architecture: $arc
 	#Network: IP $ip ($mac)
 	#Sudo: $cmds cmd"
 ******************************************************************************************************************
+end
 Then open up a iTerm2 seperate from your Virtual Machine and type in iTerm ssh your_host_name42@127.0.0.1 -p 4242 and then type your password, when it asks for it.
 Then type cd /usr/local/bin.
 Then type nano monitoring.sh and paste the text above into the vim monitoring.sh you just created, by doing command + v on your Apple keyboard.

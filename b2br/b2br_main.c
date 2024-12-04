@@ -32,7 +32,7 @@ Step steps[] = {
     {1, "Téléchargement de la machine virtuelle", "telechargement_vm.txt"},
     {2, "Installation de la machine virtuelle", "installation_vm.txt"},
     {3, "Accéder à la machine virtuelle", "access_vm.txt"},
-    {4, "Configuration de la machine virtuelle", "configuration_vm.txt"},
+    {4, "Configuration de la machine virtuelle", "continue_to_configure.txt"},
     {5, "Explication Evaluation", "testing.txt" },
     {0, NULL, NULL}
 };
@@ -126,114 +126,68 @@ void afficher_contenu_simplifie(const char *filename) {
     }
 
     char *line;
-    int in_code_block = 0;
-    size_t capacity = 0;
+    int bloc_mode = 0;
     size_t count = 0;
-    char **code_lines = NULL;
+    size_t capacity = 10;
+    char **paragraph = malloc(sizeof(char*) * capacity);
+
+    if (!paragraph) {
+        printf("Erreur de mémoire.\n");
+        close(fd);
+        return;
+    }
 
     while ((line = get_next_line(fd)) != NULL) {
         strip_newline(line);
 
-        if (!in_code_block && strncmp(line, "CODE:", 5) == 0) {
-            // Début du bloc de code
-            in_code_block = 1;
-            capacity = 10;
+        if (strncmp(line, "CODE:", 5) == 0) {
+            // Si un bloc commence
+            bloc_mode = 1;
             count = 0;
-            code_lines = malloc(sizeof(char*) * capacity);
-            if (!code_lines) {
+            free(line);
+            continue;
+        } else if (strcmp(line, "end") == 0) {
+            // Si un bloc se termine
+            bloc_mode = 0;
+
+            // Afficher le paragraphe collecté
+            for (size_t i = 0; i < count; i++) {
+                printf("%s\n", paragraph[i]);
+                free(paragraph[i]);
+            }
+            printf("\n");
+
+            // Attente utilisateur
+            printf("\nAppuyez sur Entrée pour continuer ou 'q' pour quitter...\n");
+            int ch = getchar();
+            if (ch == 'q') {
                 free(line);
                 break;
             }
+            while (ch != '\n' && ch != EOF)
+                ch = getchar();
+
+            count = 0;
             free(line);
             continue;
         }
 
-        if (in_code_block) {
-            // On est dans le bloc de code, on attend 'end'
-            if (strcmp(line, "end") == 0) {
-                // Fin du bloc
-                in_code_block = 0;
-
-                // Afficher uniquement les parties extraites
-                printf("\n-Vous pouvez copier avec 'c'");
-                for (size_t i = 0; i < count; i++) {
-                    printf("%s\n", code_lines[i]);
+        if (bloc_mode) {
+            // En mode bloc, collecter les lignes
+            if (count == capacity) {
+                capacity *= 2;
+                char **new_paragraph = realloc(paragraph, sizeof(char*) * capacity);
+                if (!new_paragraph) {
+                    printf("Erreur de mémoire.\n");
+                    break;
                 }
-
-                printf("\n 'q' pour quitter, ou Entrée pour continuer...\n");
-
-                int ch = getchar();
-                if (ch == 'q') {
-                    for (size_t i = 0; i < count; i++)
-                        free(code_lines[i]);
-                    free(code_lines);
-                    free(line);
-                    close(fd);
-                    return;
-                } else if (ch == 'c') {
-                    // Concaténer le bloc pour extraire (si nécessaire)
-                    size_t total_len = 0;
-                    for (size_t i = 0; i < count; i++)
-                        total_len += strlen(code_lines[i]) + 1;
-
-                    char *full_block = malloc(total_len + 1);
-                    if (full_block) {
-                        full_block[0] = '\0';
-                        for (size_t i = 0; i < count; i++) {
-                            strcat(full_block, code_lines[i]);
-                            strcat(full_block, "\n");
-                        }
-
-                        // On pourrait ré-extraire mais c'est déjà fait.  
-                        // Ici, supposons qu'on copie tout le bloc déjà extrait.
-                        copier_vers_presse_papier(full_block);
-                        free(full_block);
-                    }
-                    while (getchar() != '\n'); // Vider le buffer
-                } else {
-                    while (ch != '\n' && ch != EOF) {
-                        ch = getchar();
-                    }
-                }
-
-                for (size_t i = 0; i < count; i++)
-                    free(code_lines[i]);
-                free(code_lines);
-                code_lines = NULL;
-                free(line);
-                continue;
-            } else {
-                // Dans le bloc, on extrait immédiatement la partie entre << et >>
-                char *extrait = extraire_contenu_delimiteurs(line, "<<", ">>");
-                if (!extrait) {
-                    // Si aucune délimitation trouvée, on peut choisir de ne rien afficher
-                    // ou de tout simplement ignorer cette ligne
-                    extrait = strdup("");
-                }
-
-                if (count == capacity) {
-                    capacity *= 2;
-                    char **new_arr = realloc(code_lines, sizeof(char*) * capacity);
-                    if (!new_arr) {
-                        for (size_t i = 0; i < count; i++)
-                            free(code_lines[i]);
-                        free(code_lines);
-                        free(line);
-                        free(extrait);
-                        break;
-                    }
-                    code_lines = new_arr;
-                }
-                code_lines[count++] = extrait;
-                free(line);
-                continue;
+                paragraph = new_paragraph;
             }
-        }
-
-        // Ligne hors bloc CODE:...end
-        if (strlen(line) > 0) {
+            paragraph[count++] = strdup(line);
+        } else {
+            // Mode ligne par ligne
             printf("%s\n", line);
-            //printf("Appuyez sur Entrée pour continuer, 'q' pour quitter...\n");
+           // printf("Appuyez sur Entrée pour continuer ou 'q' pour quitter...\n");
             int ch = getchar();
             if (ch == 'q') {
                 free(line);
@@ -246,6 +200,14 @@ void afficher_contenu_simplifie(const char *filename) {
         free(line);
     }
 
+    // Libérer la mémoire en cas de sortie
+    for (size_t i = 0; i < count; i++) {
+        free(paragraph[i]);
+    }
+    free(paragraph);
+
     close(fd);
 }
+
+
 

@@ -1,25 +1,29 @@
 Partie 1 : Téléchargement de la machine virtuelle
 Etape 1 : Télécharger l'image ISO de Debian
 1. Rendez-vous sur le site officiel de Debian :
-  CODE: << https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/>>
- 2. Faites défiler la page jusqu'en bas et cliquez sur le lien correspondant 
-à `debian-xx.x.x-amd64-netinst.iso` pour télécharger l'image ISO.
- Remplacez `xx.x.x` par la version la plus récente disponible.
-_______________________________________________
+	 << https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/>>
+CODE: 
+2. Faites défiler la page jusqu'en bas et cliquez sur le lien correspondant 
+   à << debian-xx.x.x-amd64-netinst.iso >> pour télécharger l'image ISO.
+   Remplacez `xx.x.x` par la version la plus récente disponible.
+end
 Etape 2 : Installer VirtualBox
-[[BLOC]]
-1. Si VirtualBox n'est pas déjà installé sur votre système, téléchargez-le depuis le site officiel :
-   [https://www.virtualbox.org/](https://www.virtualbox.org/)
-[[END]]
+CODE:
+1. Si VirtualBox n'est pas déjà installé sur votre système, 
+   téléchargez-le depuis le site officiel :
+   [https://www.virtualbox.org/]
+end
 2. Suivez les instructions d'installation spécifiques à votre système d'exploitation.
 ________________________________________________
 Etape 3 : Créer une nouvelle machine virtuelle
 1. Ouvrez VirtualBox et cliquez sur le bouton `Nouveau` pour créer une nouvelle machine virtuelle.
+CODE:
 2. Configurez les paramètres suivants :
    - **Nom** : `Born2BeRoot`
    - **Dossier de la machine** : Choisissez un emplacement approprié sur votre système.
    - **Type** : `Linux`
    - **Version** : `Debian (64-bit)`
+end
 3. Cliquez sur `Suivant` et allouez 1024 Mo de mémoire vive (RAM) à la machine virtuelle.
 4. Cliquez sur `Suivant`, puis sélectionnez `Créer un disque dur virtuel maintenant` et cliquez sur `Créer`.
 5. Choisissez le type de fichier de disque dur virtuel `VDI (VirtualBox Disk Image)` et cliquez sur `Suivant`.

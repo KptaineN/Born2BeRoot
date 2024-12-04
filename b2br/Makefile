@@ -10,13 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = gcc 
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lncurses
 
-SRCS = man.c get_next_line.c ft_printf.c
+SRCS = b2br_main.c get_next_line.c
 OBJS = $(SRCS:.c=.o)
-NAME = guide
+NAME = guide_b2br
 
 all: $(NAME)
 
