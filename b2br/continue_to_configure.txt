@@ -1,0 +1,88 @@
+First type sudo apt-get install libpam-pwquality to install Password Quality Checking Library
+
+Then type sudo vim /etc/pam.d/common-password
+
+Find this line. password		requisite		pam_deny.so or
+ Add this to the end of that line `minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root`
+4.1 The line should now look like this - password  requisite     pam_pwquality.so  retry=3 minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
+Save and Exit Vim
+Next type in your Virtual Machine sudo vim /etc/login.defs
+Find this part PASS_MAX_DAYS 9999 PASS_MIN_DAYS 0 PASS_WARN_AGE 7
+Change that part to PASS_MAX_DAYS 30 and PASS_MIN_DAYS 2 keep PASS_WARN_AGE 7 as the same
+Lastly type sudo reboot to reboot the change affects
+Let's create a groupe, first type sudo groupadd user42 to create a group
+Then type sudo groupadd evaluating to create an evaluating group
+Lastly type getent group to check if the group has been created
+First type cut -d: -f1 /etc/passwd to check all local users
+let's create a user Type sudo adduser new_username to create a username - write down your new_username, as you will need this later on.
+2.1 Type sudo usermod -aG user42 your_username
+2.2 Type sudo usermod -aG evaluating your_new_username
+Type getent group user42 to check if the user is the group
+Type getent group evaluating to check the group
+Type groups to see which groups the user account belongs to
+Lastly type chage -l your_new_username to check if the password rules are working in users
+let's create sudo.log 
+Let's Configuring Sudoers Group
+First type sudo nano /etc/sudoers to go the sudoers file
+Now edit your sudoers file to look like the following by adding in all of the defaults in the image below -
+******************************************************************************************************************
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/bin:/sbin:/bin"
+Defaults	badpass_message="Password is wrong, please try again!"
+Defaults	passwd_tries=3
+Defaults	logfile="/var/log/sudo/sudo.log"
+Defaults	log_input, log_output
+Defaults	requiretty
+******************************************************************************************************************
+let' s Crontab Configuation
+Then type apt-get install -y net-tools to install the netstat tools
+Then type cd /usr/local/bin/
+Then type touch monitoring.sh
+Lastly type chmod 777 monitoring.sh
+Copy this text (To copy the text below, hover with your mouse to the right corner of the text below and a copy icon will appear).
+******************************************************************************************************************
+#!/bin/bash
+arc=$(uname -a)
+pcpu=$(grep "physical id" /proc/cpuinfo | sort | uniq | wc -l) 
+vcpu=$(grep "^processor" /proc/cpuinfo | wc -l)
+fram=$(free -m | awk '$1 == "Mem:" {print $2}')
+uram=$(free -m | awk '$1 == "Mem:" {print $3}')
+pram=$(free | awk '$1 == "Mem:" {printf("%.2f"), $3/$2*100}')
+fdisk=$(df -BG | grep '^/dev/' | grep -v '/boot$' | awk '{ft += $2} END {print ft}')
+udisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} END {print ut}')
+pdisk=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{ut += $3} {ft+= $2} END {printf("%d"), ut/ft*100}')
+cpul=$(top -bn1 | grep '^%Cpu' | cut -c 9- | xargs | awk '{printf("%.1f%%"), $1 + $3}')
+lb=$(who -b | awk '$1 == "system" {print $3 " " $4}')
+lvmu=$(if [ $(lsblk | grep "lvm" | wc -l) -eq 0 ]; then echo no; else echo yes; fi)
+ctcp=$(ss -Ht state established | wc -l)
+ulog=$(users | wc -w)
+ip=$(hostname -I)
+mac=$(ip link show | grep "ether" | awk '{print $2}')
+cmds=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
+wall "	#Architecture: $arc
+	#CPU physical: $pcpu
+	#vCPU: $vcpu
+	#Memory Usage: $uram/${fram}MB ($pram%)
+	#Disk Usage: $udisk/${fdisk}Gb ($pdisk%)
+	#CPU load: $cpul
+	#Last boot: $lb
+	#LVM use: $lvmu
+	#Connections TCP: $ctcp ESTABLISHED
+	#User log: $ulog
+	#Network: IP $ip ($mac)
+	#Sudo: $cmds cmd"
+******************************************************************************************************************
+Then open up a iTerm2 seperate from your Virtual Machine and type in iTerm ssh your_host_name42@127.0.0.1 -p 4242 and then type your password, when it asks for it.
+Then type cd /usr/local/bin.
+Then type nano monitoring.sh and paste the text above into the vim monitoring.sh you just created, by doing command + v on your Apple keyboard.
+Save and Exit your monitoring.sh
+5.1 - Then type exit to exit the iTerm SSH Login.
+5.2 - Then go back to your Virtual Machine (not iTerm) and continue on with the steps below.
+Then type sudo visudo to open your sudoers file
+Add in this line your_username ALL=(ALL) NOPASSWD: /usr/local/bin/monitoring.sh under where its written %sudo ALL=(ALL:ALL) ALL
+Then exit and save your sudoers file
+Now type sudo reboot in your Virtual Machine to reboot sudo
+Type sudo /usr/local/bin/monitoring.sh to execute your script as su (super user)
+Type sudo crontab -u root -e to open the crontab and add the rule
+Lastly at the end of the crontab, type the following */10 * * * * /usr/local/bin/monitoring.sh this means that every 10 mins, this script will show

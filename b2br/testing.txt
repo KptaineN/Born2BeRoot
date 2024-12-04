@@ -1,0 +1,55 @@
+Q : Comment vérifier que le fichier signature.txt est présent dans le dépôt Git cloné ?
+A : ls | grep signature.txt
+Q : Comment vérifier que l’environnement graphique n’est pas lancé au démarrage ?
+A : systemctl get-default (Le résultat devrait être multi-user.target et non graphical.target)
+Q : Comment vérifier que le service UFW est actif ?
+A : sudo ufw status
+Q : Comment vérifier que le service SSH est actif ?
+A : sudo systemctl status ssh
+Q : Comment afficher la distribution utilisée (Debian ou CentOS) ?
+A : lsb_release -a ou cat /etc/os-release
+Q : Comment vérifier qu’un utilisateur (par exemple, nom_de_l_etudiant) a bien été ajouté aux groupes sudo et user42 ?
+A : getent group sudo | grep nom_de_l_etudiant *|* getent group user42 | grep nom_de_l_etudiant
+Q : Comment créer un nouvel utilisateur (new_username) avec un mot de passe respectant la politique demandée ?
+A : sudo adduser new_username (Suivre les instructions et saisir un mot de passe conforme à la politique)
+Q : Comment vérifier la politique de mot de passe d’un utilisateur (par exemple new_username) ?
+A : sudo chage -l new_username
+Q : Comment créer un groupe evaluating et y ajouter l’utilisateur new_username ?
+A : sudo groupadd evaluating *|* sudo usermod -aG evaluating new_username
+Q : Comment vérifier que l’utilisateur new_username appartient bien au groupe evaluating ?
+A : getent group evaluating | grep new_username
+Q : Comment modifier le hostname de la machine et redémarrer ?
+A : sudo hostnamectl set-hostname nouveau_hostname *|* sudo reboot
+Q : Comment visualiser les partitions du système ?
+A : lsblk
+Q : Comment vérifier que sudo est installé ?
+A : dpkg -l | grep sudo (Debian/Ubuntu) *|* rpm -qa | grep sudo (CentOS)
+Q : Comment ajouter un utilisateur (exemple_user) au groupe sudo ?
+A : sudo usermod -aG sudo exemple_user
+Q : Comment lister le contenu du dossier /var/log/sudo/ pour vérifier les logs ?
+A : ls -l /var/log/sudo/
+Q : Comment exécuter une commande via sudo et vérifier que les logs sont mis à jour ?
+A : sudo whoami *|* cat /var/log/sudo/nom_du_fichier_de_log (Remplacer nom_du_fichier_de_log par le nom approprié)
+Q : Comment afficher les règles actives du pare-feu UFW ?
+A : sudo ufw status numbered
+Q : Comment autoriser le port 8080 sur UFW ?
+A : sudo ufw allow 8080
+Q : Comment supprimer une règle (par exemple la règle 4) dans UFW ?
+A : sudo ufw delete 4
+Q : Comment vérifier l’état du service SSH et le port utilisé ?
+A : sudo service ssh status *|* grep Port /etc/ssh/sshd_config
+Q : Comment se connecter en SSH avec un utilisateur new_user sur le port 4242 ?
+A : ssh new_user@127.0.0.1 -p 4242
+Q : Comment vérifier que root ne peut pas se connecter via SSH ?
+A : ssh root@127.0.0.1 -p 4242 (Doit afficher "Permission denied")
+Q : Comment afficher et éditer le script de monitoring (monitoring.sh) ?
+A : cd /usr/local/bin *|* vim monitoring.sh
+Q : Comment éditer la crontab de root pour changer l’intervalle d’exécution du script de 10 à 1 minute ?
+A : sudo crontab -u root -e (Modifiez la ligne du script en remplaçant "/10" par "/1")
+Q : Comment arrêter le service cron, puis le relancer, afin que le script ne tourne plus au démarrage ?
+A : sudo systemctl stop cron *|* sudo systemctl start cron (ou selon la distribution : sudo service cron stop / sudo service cron start)
+Q : Comment vérifier, après un redémarrage, que le script monitoring.sh est toujours présent et inchangé ?
+A : ls -l /usr/local/bin/monitoring.sh
+Q : Comment reconsulter la crontab de root après redémarrage ?
+A : sudo crontab -u root -l
+Fin
