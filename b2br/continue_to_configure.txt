@@ -1,29 +1,29 @@
-First type sudo apt-get install libpam-pwquality to install Password Quality Checking Library
-Then type sudo vim /etc/pam.d/common-password
-Find this line. password		requisite		pam_deny.so or
- Add this to the end of that line `minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root`
-4.1 The line should now look like this - password  requisite     pam_pwquality.so  retry=3 minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
-Save and Exit Vim
-Next type in your Virtual Machine sudo vim /etc/login.defs
-Find this part PASS_MAX_DAYS 9999 PASS_MIN_DAYS 0 PASS_WARN_AGE 7
-Change that part to PASS_MAX_DAYS 30 and PASS_MIN_DAYS 2 keep PASS_WARN_AGE 7 as the same
-Lastly type sudo reboot to reboot the change affects
-Let's create a groupe, first type sudo groupadd user42 to create a group
-Then type sudo groupadd evaluating to create an evaluating group
-Lastly type getent group to check if the group has been created
-First type cut -d: -f1 /etc/passwd to check all local users
-let's create a user Type sudo adduser new_username to create a username - write down your new_username, as you will need this later on.
-2.1 Type sudo usermod -aG user42 your_username
-2.2 Type sudo usermod -aG evaluating your_new_username
-Type getent group user42 to check if the user is the group
-Type getent group evaluating to check the group
-Type groups to see which groups the user account belongs to
-Lastly type chage -l your_new_username to check if the password rules are working in users
-let's create sudo.log 
-Let's Configuring Sudoers Group
-First type sudo nano /etc/sudoers to go the sudoers file
+Tapez d'abord sudo apt-get install libpam-pwquality pour installer la bibliothèque de vérification de la qualité des mots de passe
+Tapez ensuite "sudo vim /etc/pam.d/common-password"
+Recherchez cette ligne. mot de passe requis pam_deny.so ou
+Ajoutez ceci à la fin de cette ligne "minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root"
+4.1 La ligne devrait maintenant ressembler à ceci - mot de passe requis pam_pwquality.so retry=3 minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
+Enregistrez et quittez Vim
+Tapez ensuite dans votre machine virtuelle "sudo vim /etc/login.defs"
+Trouvez cette partie PASS_MAX_DAYS 9999 PASS_MIN_DAYS 0 PASS_WARN_AGE 7
+Changez cette partie en PASS_MAX_DAYS 30 et PASS_MIN_DAYS 2 conservez PASS_WARN_AGE 7
+Enfin, tapez "sudo reboot" pour redémarrer le les changements affectent
+Créons un groupe, tapez d'abord "sudo groupadd user42" pour créer un groupe
+Tapez ensuite "sudo groupadd evaluating" pour créer un groupe d'évaluation
+Enfin, tapez "getent group" pour vérifier si le groupe a été créé
+Tapez d'abord "cut -d: -f1 /etc/passwd" pour vérifier tous les utilisateurs locaux
+créons un utilisateur Tapez "sudo adduser new_username" pour créer un nom d'utilisateur - notez votre new_username, car vous en aurez besoin plus tard.
+2.1 Tapez "sudo usermod -aG user42 votre_nom_utilisateur"
+2.2 Tapez "sudo usermod -aG evaluating votre_nouveau_nom_utilisateur"
+Tapez "getent group user42" pour vérifier si l'utilisateur est le groupe
+Tapez "getent group evaluating" pour vérifier le groupe
+Tapez "groups" pour voir à quels groupes appartient le compte utilisateur
+Enfin, tapez "chage -l votre_nouveau_nom_utilisateur" pour vérifier si les règles de mot de passe fonctionnent dans les utilisateurs
+créons 'sudo.log'
+Configurons le groupe Sudoers
+Tapez d'abord "sudo nano /etc/sudoers" pour accéder au fichier sudoers
 CODE:
-Now edit your sudoers file to look like the following by adding in all of the defaults in the image below -
+Modifiez maintenant votre fichier sudoers pour qu'il ressemble à ce qui suit en ajoutant toutes les valeurs par défaut dans l'image ci-dessous -
 ******************************************************************************************************************
 Defaults	env_reset
 Defaults	mail_badpass
@@ -35,13 +35,13 @@ Defaults	log_input, log_output
 Defaults	requiretty
 ******************************************************************************************************************
 end
-let' s Crontab Configuation
-Then type apt-get install -y net-tools to install the netstat tools
-Then type cd /usr/local/bin/
-Then type touch monitoring.sh
-Lastly type chmod 777 monitoring.sh
+Passons à la configuration de Crontab
+Tapez ensuite "apt-get install -y net-tools" pour installer les outils netstat
+Tapez ensuite "cd /usr/local/bin/"
+Tapez ensuite "touch monitoring.sh"
+Enfin, tapez "chmod 777 monitoring.sh"
 CODE:
-Copy this text (To copy the text below, hover with your mouse to the right corner of the text below and a copy icon will appear).
+Copiez ce texte (Pour copier le texte ci-dessous, passez votre souris sur le coin droit du texte ci-dessous et une icône de copie apparaîtra)
 ******************************************************************************************************************
 #!/bin/bash
 arc=$(uname -a)
@@ -75,16 +75,16 @@ wall "	#Architecture: $arc
 	#Sudo: $cmds cmd"
 ******************************************************************************************************************
 end
-Then open up a iTerm2 seperate from your Virtual Machine and type in iTerm ssh your_host_name42@127.0.0.1 -p 4242 and then type your password, when it asks for it.
-Then type cd /usr/local/bin.
-Then type nano monitoring.sh and paste the text above into the vim monitoring.sh you just created, by doing command + v on your Apple keyboard.
-Save and Exit your monitoring.sh
-5.1 - Then type exit to exit the iTerm SSH Login.
-5.2 - Then go back to your Virtual Machine (not iTerm) and continue on with the steps below.
-Then type sudo visudo to open your sudoers file
-Add in this line your_username ALL=(ALL) NOPASSWD: /usr/local/bin/monitoring.sh under where its written %sudo ALL=(ALL:ALL) ALL
-Then exit and save your sudoers file
-Now type sudo reboot in your Virtual Machine to reboot sudo
-Type sudo /usr/local/bin/monitoring.sh to execute your script as su (super user)
-Type sudo crontab -u root -e to open the crontab and add the rule
-Lastly at the end of the crontab, type the following */10 * * * * /usr/local/bin/monitoring.sh this means that every 10 mins, this script will show
+Ouvrez ensuite un iTerm2 séparé de votre machine virtuelle et saisissez iTerm ssh votre_nom_d'hôte42@127.0.0.1 -p 4242 puis saisissez votre mot de passe lorsqu'il vous le demande.
+Saisissez ensuite "cd /usr/local/bin."
+Saisissez ensuite "nano monitoring.sh" et collez le texte ci-dessus dans le vim monitoring.sh que vous venez de créer, en exécutant la commande + v sur votre clavier Apple.
+Enregistrez et quittez votre monitoring.sh
+5.1 - Tapez ensuite 'exit' pour quitter la connexion SSH iTerm.
+5.2 - Revenez ensuite à votre machine virtuelle (pas à iTerm) et continuez avec les étapes ci-dessous.
+Tapez ensuite "sudo visudo" pour ouvrir votre fichier sudoers
+Ajoutez dans cette ligne "votre_nom_utilisateur ALL=(ALL) NOPASSWD: /usr/local/bin/monitoring.sh" sous laquelle il est écrit %sudo ALL=(ALL:ALL) ALL
+Puis quittez et enregistrez votre fichier sudoers
+Tapez maintenant "sudo reboot" dans votre machine virtuelle pour redémarrer sudo
+Tapez "sudo /usr/local/bin/monitoring.sh" pour exécuter votre script en tant que su (super utilisateur)
+Tapez "sudo crontab -u root -e" pour ouvrir le crontab et ajouter la règle
+Enfin à la fin du crontab, tapez ce qui suit */10 * * * * /usr/local/bin/monitoring.sh cela signifie que toutes les 10 minutes, ce script s'affichera

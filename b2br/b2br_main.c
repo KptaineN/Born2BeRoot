@@ -6,9 +6,10 @@
 /*   By: nkiefer <nkiefer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:24:37 by nkiefer           #+#    #+#             */
-/*   Updated: 2024/12/04 15:59:41 by nkiefer          ###   ########.fr       */
+/*   Updated: 2024/12/06 14:54:02 by nkiefer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -20,44 +21,51 @@
 void afficher_menu_principal();
 void afficher_etape(const char *description, const char *filename);
 void afficher_contenu_simplifie(const char *filename);
-void copier_vers_presse_papier(const char *texte);
+void lancer_programme_cache(const char *filename);
+void vider_buffer();
 
 typedef struct {
-    int option;
+    char option; // Change int en char pour permettre des choix comme 'b'
     const char *description;
     const char *filename;
 } Step;
 
 Step steps[] = {
-    {1, "Téléchargement de la machine virtuelle", "telechargement_vm.txt"},
-    {2, "Installation de la machine virtuelle", "installation_vm.txt"},
-    {3, "Accéder à la machine virtuelle", "access_vm.txt"},
-    {4, "Configuration de la machine virtuelle", "continue_to_configure.txt"},
-    {5, "Explication Evaluation", "testing.txt" },
-    {0, NULL, NULL}
+    {'1', "Téléchargement de la machine virtuelle", "telechargement_vm.txt"},
+    {'2', "Installation de la machine virtuelle", "installation_vm.txt"},
+    {'3', "Accéder à la machine virtuelle", "access_vm.txt"},
+    {'4', "Configuration de la machine virtuelle", "continue_to_configure.txt"},
+    {'5', "Explication Evaluation", "testing.txt"},
+    {'6', "Question Theorique", "Qtheorique.txt"},
+    {'7', "Question Pratique", "Qpratique.txt"},
+    {'b', "Lancer le programme caché", ".programme_bonus"},  // Option cachée
+    {'x', "hihi", ".whatisit.sh"},
+    {'0', "Quitter", NULL},
+    {'\0', NULL, NULL}
 };
 
 int main() {
-    int choix;
+    char choix;
     do {
         afficher_menu_principal();
         printf("Entrez votre choix : ");
-        if (scanf("%d", &choix) != 1) {
-            while (getchar() != '\n');
-            continue;
-        }
-        getchar(); // Consomme le '\n'
+        choix = getchar();
+        vider_buffer(); // Vide le buffer après la saisie
 
-        if (choix == 0) {
+        if (choix == '0') {
             printf("Quitter le programme.\n");
             break;
         }
 
         int found = 0;
-        for (int i = 0; steps[i].option != 0; i++) {
+        for (int i = 0; steps[i].option != '\0'; i++) {
             if (steps[i].option == choix) {
                 found = 1;
-                afficher_etape(steps[i].description, steps[i].filename);
+                if (choix == 'b' || choix == 'x') { // Les deux options utilisent le programme caché
+                    lancer_programme_cache(steps[i].filename);
+                } else {
+                    afficher_etape(steps[i].description, steps[i].filename);
+                }
                 break;
             }
         }
@@ -65,22 +73,40 @@ int main() {
         if (!found) {
             printf("Option invalide. Veuillez réessayer.\n");
         }
-    } while (choix != 0);
+    } while (choix != '0');
 
     return 0;
 }
 
 void afficher_menu_principal() {
     printf("\n=== Guide Born2BeRoot ===\n");
-    for (int i = 0; steps[i].option != 0; i++) {
-        printf("%d. %s\n", steps[i].option, steps[i].description);
+    for (int i = 0; steps[i].option != '\0'; i++) {
+        // N'affiche pas les options 'b' et 'x'
+        if (steps[i].option == 'b' || steps[i].option == 'x') {
+            continue;
+        }
+        printf("%c. %s\n", steps[i].option, steps[i].description);
     }
-    printf("0. Quitter\n");
 }
 
 void afficher_etape(const char *description, const char *filename) {
     (void)description;
     afficher_contenu_simplifie(filename);
+}
+
+void lancer_programme_cache(const char *filename) {
+    printf("Lancement du programme caché : %s\n", filename);
+
+    // Utiliser system() pour exécuter le fichier
+    char command[256];
+    snprintf(command, sizeof(command), "./%s", filename); // Exécute le fichier
+    int result = system(command);
+
+    if (result != 0) {
+        printf("Erreur lors du lancement de %s.\n", filename);
+    } else {
+        printf("%s exécuté avec succès.\n", filename);
+    }
 }
 
 void copier_vers_presse_papier(const char *texte) {
@@ -141,31 +167,31 @@ void afficher_contenu_simplifie(const char *filename) {
         strip_newline(line);
 
         if (strncmp(line, "CODE:", 5) == 0) {
-            // Si un bloc commence
+            // Début d'un bloc
             bloc_mode = 1;
             count = 0;
             free(line);
             continue;
         } else if (strcmp(line, "end") == 0) {
-            // Si un bloc se termine
+            // Fin d'un bloc
             bloc_mode = 0;
 
-            // Afficher le paragraphe collecté
+            // Afficher les lignes collectées
             for (size_t i = 0; i < count; i++) {
                 printf("%s\n", paragraph[i]);
                 free(paragraph[i]);
             }
             printf("\n");
 
-            // Attente utilisateur
-            printf("\nAppuyez sur Entrée pour continuer ou 'q' pour quitter...\n");
+            // Attendre l'entrée utilisateur
+            //printf("Appuyez sur Entrée pour continuer ou 'q' pour quitter...\n");
             int ch = getchar();
+            vider_buffer(); // Vide le buffer après saisie
+
             if (ch == 'q') {
                 free(line);
                 break;
             }
-            while (ch != '\n' && ch != EOF)
-                ch = getchar();
 
             count = 0;
             free(line);
@@ -185,28 +211,33 @@ void afficher_contenu_simplifie(const char *filename) {
             }
             paragraph[count++] = strdup(line);
         } else {
-            // Mode ligne par ligne
-            printf("%s\n", line);
-           // printf("Appuyez sur Entrée pour continuer ou 'q' pour quitter...\n");
+            // Mode ligne par ligne (hors bloc)
+            printf("%s", line);
+            //printf("Appuyez sur Entrée pour continuer ou 'q' pour quitter...\n");
             int ch = getchar();
+            vider_buffer(); // Vide le buffer après saisie
+
             if (ch == 'q') {
                 free(line);
                 break;
             }
-            while (ch != '\n' && ch != EOF)
-                ch = getchar();
         }
 
         free(line);
     }
 
-    // Libérer la mémoire en cas de sortie
+    // Libérer la mémoire restante (en cas de sortie anticipée)
     for (size_t i = 0; i < count; i++) {
         free(paragraph[i]);
     }
     free(paragraph);
 
     close(fd);
+}
+
+void vider_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 

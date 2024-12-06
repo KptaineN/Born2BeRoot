@@ -1,0 +1,47 @@
+**QUESTIONS PRATIQUES :**
+1. **Vérifier la signature du fichier .vdi :**  
+   shasum VirtualBox.vdi
+2. **Script affichant des informations toutes les 10 minutes :**  
+   Mettre en place un script à l’aide de cron :  
+   */10 * * * * /chemin/vers/monitoring.sh
+3. **Pas d’environnement graphique au démarrage :**  
+   Vérifier le fichier `/etc/default/grub` et configurer en mode texte
+4. **Connexion avec un utilisateur (non root) :**  
+   Ajouter un utilisateur et vérifier ses groupes :  
+   getent group sudo
+   getent group user42
+5. **Vérifier que UFW est actif :**  
+   sudo ufw status
+6. **Vérifier que SSH est actif :**  
+   sudo systemctl status ssh
+7. **Vérifier le système d’exploitation :**  
+   Lire les informations affichées par le script ou utiliser :  
+   cat /etc/os-release
+8. **Créer un utilisateur évaluateur :**  
+   sudo adduser <username>
+   sudo groupadd evaluating
+   sudo usermod -aG evaluating <username>
+   sudo chage -l <username>
+9. **Vérifier et modifier le hostname :**  
+   hostnamectl set-hostname <new_hostname>
+   sudo nano /etc/hosts
+10. **Vérifier les partitions :**  
+    lsblk
+11. **Vérifier que sudo est installé et fonctionne :**  
+    dpkg -l | grep sudo
+    sudo ls
+12. **Vérifier UFW et ajouter une règle pour le port 8080 :**  
+    sudo ufw allow 8080
+    sudo ufw status numbered
+    sudo ufw delete <rule_number>
+13. **Vérifier SSH et forcer l’utilisation du port 4242 :**  
+    Modifier `/etc/ssh/sshd_config` et ajouter :  Port 4242
+14. **Tester la connexion SSH :**  
+    ssh your_user_id@127.0.0.1 -p 4242
+15. **Vérifier que SSH root est désactivé :**  
+    Modifier `/etc/ssh/sshd_config` :    PermitRootLogin no
+16. **Afficher le script monitoring.sh et changer cron pour 1 minute :**  
+    cat /usr/local/bin/monitoring.sh
+    sudo crontab -u root -e  # Ajouter */1 * * * * /chemin/vers/monitoring.sh
+17. **Redémarrer le serveur pour vérifier les modifications :**  
+    sudo reboot

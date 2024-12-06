@@ -1,0 +1,128 @@
+─────█▀▀▀▀▀▀▀▀█───
+───▄▀──────────█──
+──▄▀───────────█──
+─▄▀─█───────────█─
+█──▄█────────▄──█
+─▀▀─█──█──█──█▄▀
+────█──█──█▀▀
+────█──█▄▄█
+────█──█
+────▀▄▄█
+
+manuel
+SCSI2 VBOX HARDISK
+yes create new partion
+ pri/log 32.2gb freespace
+ create a new partition
+ size ; 500m
+ primary
+ beginning
+ change mount point for /boot
+ finish setting up partition
+ pri/log 32.7 GB freespace
+ create a new partition
+ enter size : max
+ logical
+ change 'mount point' /for "do no not mount it" and finsish
+ don't forget to configure encrypted volumes
+ Yes -> create encrypted volumes
+ select /sda5 with full size with space and enter
+ finsih and finsih
+ yes and cancel it's empty
+ (We don't care if it takes a long time or not, we cancel it because there is nothing to encrypt since the partition is empty)
+ - Again we must enter a password, this time it will be the encryption phrase. As I previously mentioned, you must repeat the process and write it down as it will be important in the future. and repeat 
+ configure the logical volume Manager
+ Yes -> create volume group
+ groupe name : LVMGRoup
+ space on sda5_crypt enter
+ create logical volume
+ LVMGroup
+ name : root
+ size : 10g 
+ create logical volume
+ LVMGroup
+ name : swap
+ size : 2.3g
+ repeat again logical volume LVMGroup
+ name : home
+ size : 5g
+ repeat again logical volume LVMGroup
+ name : var
+ size : 3g
+ repeat again logical volume LVMGroup
+ name : srv
+ size : 3g
+ repeat again logical volume LVMGroup
+ name : tmp
+ size : 3g
+ repeat again logical volume LVMGroup
+ name : var-log
+ size : 4g
+ And finish 
+ go to #1 5.GB from home
+ use as: do not use 
+ ext4 journaling file system
+ change mount point for /home and done setting up
+ repeat same process for 10gb LV root and change mount point for /root
+ and repeat process for srv 3GB to "use as: do not use"
+ ext4 journaling file system and change mount point to /srv
+ same process for swap expect how to use this partion change to ' swap area ' and done setting up the part
+ repeat like normaly with ext4 for tmp and var.
+ when you re to var-log for the mount point choose enter mannually or other choice
+ and enter /var/log and continue
+ And finsi and finish partitioning 
+ yes for apply the changes
+ and did no for don't use additinal packytage
+ continue the normal instalation 
+ choose your country
+ deb.debien.org for me
+ continue
+ and select no
+ remove al;l with space and continue
+ yes instal the grub
+ slect /dev/sda (ata-vbox...)
+ Continue to finsih the instalation 
+ 
+ 
+ ╚═( ͡° ͜ʖ ͡°)═╝
+╚═(███)═╝
+╚═(███)═╝
+.╚═(███)═╝
+..╚═(███)═╝
+…╚═(███)═╝
+…╚═(███)═╝
+..╚═(███)═╝
+.╚═(███)═╝
+ ╚═(███)═╝
+.╚═(███)═╝
+..╚═(███)═╝
+…╚═(███)═╝
+…╚═(███)═╝
+..╚═(███)═╝
+.╚═(███)═╝
+ ╚═(███)═╝
+.╚═(███)═╝
+..╚═(███)═╝
+…╚═(███)═╝
+…╚═(███)═╝
+..╚═(███)═╝
+.╚═(███)═╝
+ ╚═(███)═╝
+.╚═(███)═╝
+..╚═(███)═╝
+…╚═(███)═╝
+…╚═(███)═╝
+..╚═(███)═╝
+.╚═(███)═╝
+ ╚═(███)═╝
+.╚═(███)═╝
+..╚═(███)═╝
+…╚═(███)═╝
+…╚═(███)═╝
+..╚═(███)═╝
+.╚═(███)═╝
+ 
+ 
+ 
+ 
+ 
