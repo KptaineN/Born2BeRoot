@@ -11,7 +11,8 @@ end
 3. Cliquez sur `Suivant` pour continuer.
 Etape 2 : Allocation de la Mémoire Vive (RAM)
 1. **Définissez la taille de la mémoire** à allouer à la machine virtuelle :
-2. **Taille de la mémoire** : 1024 Mo (1 Go) Cliquez sur `Suivant` pour continuer.
+2. **Taille de la mémoire** : 1024 Mo (1 Go) {+ si besoin, cela peut toujours etre modifier dans les settings plus tard} 
+	Cliquez sur `Suivant` pour continuer.
 Etape 3 : Création du Disque Dur Virtuel
 1. **Choisissez l'option** `Créer un disque dur virtuel maintenant` et cliquez sur `Créer`.
 2. **Type de fichier du disque dur** :
@@ -20,7 +21,7 @@ Etape 3 : Création du Disque Dur Virtuel
    - Choisissez `Alloué dynamiquement` pour que le fichier du disque dur n'occupe que l'espace réellement utilisé sur votre disque physique. Cliquez sur `Suivant`.
 BLOC:
 4. **Taille et emplacement du fichier du disque dur virtuel** :
-   - **Taille** : 12 Go
+   - **Taille** : 12 Go {Ou 30.8 pour B}
    - **Emplacement** : Laissez l'emplacement par défaut ou choisissez un autre emplacement si nécessaire.
    - Cliquez sur `Créer` pour finaliser la création du disque dur virtuel.
 end

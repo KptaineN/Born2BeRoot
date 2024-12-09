@@ -49,7 +49,7 @@ Etape 5 : Configuration de l'Heure
    - Sélectionnez le fuseau horaire correspondant à votre emplacement actuel et appuyez sur `Entrée`.
 Etape 6 : Partitionnement du Disque
 1. **Méthode de partitionnement** :
-   - Choisissez `Guided - use entire disk and set up encrypted LVM` et appuyez sur `Entrée`.
+   - Choisissez `Guided - use entire disk and set up encrypted LVM` et appuyez sur `Entrée` OU Manuel pour realiser les "B"onus.
 2. **Sélection du disque** :
    - Sélectionnez le disque à partitionner et appuyez sur `Entrée`.
 3. **Schéma de partitionnement** :
