@@ -1,0 +1,29 @@
+**QUESTIONS THÉORIQUES :**
+1. **Comment fonctionne une machine virtuelle et quel est son but ?**  
+   Une machine virtuelle est une émulation logicielle d’un ordinateur, permettant d’exécuter un système d’exploitation dans un environnement isolé. Son but est d’offrir flexibilité, isolation et efficacité pour des tâches comme le développement, les tests, ou l’hébergement.
+2. **Pourquoi choisir Debian ou CentOS ?**  
+   - **Debian** : Stabilité, grande communauté, idéal pour les serveurs et postes de travail.  
+   - **CentOS** : Basé sur Red Hat, stabilité pour les entreprises, idéal pour des environnements de production avec support à long terme.
+3. **Différence entre Debian et CentOS ?**  
+   Debian utilise des paquets .deb (APT) et met l'accent sur la communauté, tandis que CentOS utilise des paquets .rpm (DNF/YUM) et est orienté entreprise avec un support basé sur Red Hat.
+4. **Debian : Différence entre aptitude, apt et AppArmor ?**  
+   - **apt** : Gestionnaire de paquets principal (commandes simples).  
+   - **aptitude** : Interface avancée pour la gestion de paquets.  
+   - **AppArmor** : Framework de sécurité pour confiner les applications.
+5. **CentOS : Qu'est-ce que SELinux et DNF ?**  
+   - **SELinux** : Module de sécurité qui contrôle les accès aux ressources système.  
+   - **DNF** : Gestionnaire de paquets moderne pour CentOS.
+6. **Avantages/Inconvénients d’une politique de mots de passe forts ?**  
+   - **Avantages** : Réduction des risques de piratage.  
+   - **Inconvénients** : Complexité pour les utilisateurs, risques de perte de mot de passe.
+7. **Qu'est-ce qu'une partition et comment fonctionne LVM ?**  
+   - **Partition** : Division logique d’un disque dur.  
+   - **LVM** : Gestion dynamique des volumes logiques pour redimensionner ou déplacer les partitions.
+8. **Qu'est-ce que sudo ?**  
+   Une commande permettant à un utilisateur d’exécuter des tâches avec des privilèges administratifs.
+9. **Qu'est-ce qu'UFW et son utilité ?**  
+   Un pare-feu simple à configurer pour gérer les règles réseau.
+10. **Qu'est-ce que SSH et son utilité ?**  
+    Un protocole sécurisé pour accéder à distance à une machine.
+11. **Qu'est-ce que cron ?**  
+    Un planificateur de tâches automatisées sur les systèmes UNIX.

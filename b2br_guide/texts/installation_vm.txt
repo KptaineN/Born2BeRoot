@@ -1,0 +1,49 @@
+# Partie 2 : Installation de la Machine Virtuelle
+## Étape 1 : Création d'une Nouvelle Machine Virtuelle
+1. **Ouvrez VirtualBox** et cliquez sur le bouton `Nouveau` pour créer une nouvelle machine virtuelle.
+2. **Configuration de la machine virtuelle** :
+   - **Nom** : `Born2BeRoot`
+   - **Dossier de la machine** : Choisissez un emplacement approprié sur votre système.
+   - **Type** : `Linux`
+   - **Version** : `Debian (64-bit)`
+3. Cliquez sur `Suivant` pour continuer.
+Etape 2 : Allocation de la Mémoire Vive (RAM)
+1. **Définissez la taille de la mémoire** à allouer à la machine virtuelle :
+2. **Taille de la mémoire** : 1024 Mo (1 Go) {+ si besoin, cela peut toujours etre modifier dans les settings plus tard} 
+	Cliquez sur `Suivant` pour continuer.
+Etape 3 : Création du Disque Dur Virtuel
+1. **Choisissez l'option** `Créer un disque dur virtuel maintenant` et cliquez sur `Créer`.
+2. **Type de fichier du disque dur** :
+   - Sélectionnez `VDI (VirtualBox Disk Image)` et cliquez sur `Suivant`.
+3. **Stockage sur disque physique** :
+   - Choisissez `Alloué dynamiquement` pour que le fichier du disque dur n'occupe que l'espace réellement utilisé sur votre disque physique. Cliquez sur `Suivant`.
+CODE:
+4. **Taille et emplacement du fichier du disque dur virtuel** :
+   - **Taille** : 12 Go {Ou 30.8 pour B}
+   - **Emplacement** : Laissez l'emplacement par défaut ou choisissez un autre emplacement si nécessaire.
+   - Cliquez sur `Créer` pour finaliser la création du disque dur virtuel.
+end
+Etape 4 : Configuration du Stockage de la Machine Virtuelle
+CODE:
+1. **Accédez aux paramètres de la machine virtuelle** :
+   - Sélectionnez la machine virtuelle `Born2BeRoot` dans VirtualBox.
+   - Cliquez sur `Configuration`.
+end
+CODE:
+2. **Ajout de l'image ISO de Debian** :
+   - Dans le menu de gauche, cliquez sur `Stockage`.
+   - Sous `Contrôleur : IDE`, cliquez sur l'icône du disque avec un signe plus pour ajouter un lecteur optique.
+   - Choisissez `Choisir un fichier de disque...` et sélectionnez l'image ISO de Debian précédemment téléchargée.
+   - Cliquez sur `OK` pour enregistrer les modifications.
+end
+Etape 5 : Démarrage de l'Installation de Debian
+1. **Lancez la machine virtuelle** :
+   - Avec la machine virtuelle `Born2BeRoot` sélectionnée, cliquez sur le bouton `Démarrer`.
+2. **Installation de Debian** :
+   - Suivez les instructions à l'écran pour installer Debian sur la machine virtuelle.
+   - Lors de l'installation, configurez les paramètres réseau, les partitions de disque et les comptes utilisateur selon vos préférences.
+3. **Finalisation de l'installation** :
+   - Une fois l'installation terminée, redémarrez la machine virtuelle.
+   - **Important** : Déconnectez l'image ISO de Debian du lecteur optique virtuel pour permettre à la machine de démarrer à partir du disque dur virtuel nouvellement installé.
+**Remarque** : Pour des instructions détaillées sur l'installation de Debian, consultez la documentation officielle de Debian ou le guide Born2BeRoot de Pasquale Rossi.
+
