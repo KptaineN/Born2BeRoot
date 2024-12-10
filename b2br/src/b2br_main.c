@@ -6,7 +6,7 @@
 /*   By: nkiefer <nkiefer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:24:37 by nkiefer           #+#    #+#             */
-/*   Updated: 2024/12/06 14:54:02 by nkiefer          ###   ########.fr       */
+/*   Updated: 2024/12/10 13:24:49 by nkiefer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void afficher_contenu_simplifie(const char *filename);
 void lancer_programme_cache(const char *filename);
 void vider_buffer();
 
+#define DIR "texts/"
+
 typedef struct {
     char option; // Change int en char pour permettre des choix comme 'b'
     const char *description;
@@ -31,15 +33,17 @@ typedef struct {
 } Step;
 
 Step steps[] = {
-    {'1', "Téléchargement de la machine virtuelle", "telechargement_vm.txt"},
-    {'2', "Installation de la machine virtuelle", "installation_vm.txt"},
-    {'3', "Accéder à la machine virtuelle", "access_vm.txt"},
-    {'4', "Configuration de la machine virtuelle", "continue_to_configure.txt"},
-    {'5', "Explication Evaluation", "testing.txt"},
-    {'6', "Question Theorique", "Qtheorique.txt"},
-    {'7', "Question Pratique", "Qpratique.txt"},
-    {'b', "Lancer le programme caché", ".programme_bonus"},  // Option cachée
+    {'1', "Téléchargement de la machine virtuelle", DIR "telechargement_vm.txt"},
+    {'2', "Installation de la machine virtuelle", DIR "installation_vm.txt"},
+    {'3', "Accéder à la machine virtuelle", DIR "access_vm.txt"},
+    {'4', "Configuration de la machine virtuelle", DIR "continue_to_configure.txt"},
+    {'5', "Explication Evaluation", DIR "testing.txt"},
+    {'6', "Question Theorique", DIR "Qtheorique.txt"},
+    {'7', "Question Pratique", DIR "Qpratique.txt"},
+    {'b', "Lancer le programme caché", DIR ".programme_bonus"},  // Option cachée
     {'x', "hihi", ".whatisit.sh"},
+    {'8', "tester de martin", DIR "tester.txt"},
+    {'9', "ReadME", "README.txt"},
     {'0', "Quitter", NULL},
     {'\0', NULL, NULL}
 };

@@ -1,13 +1,11 @@
 # Partie 2 : Installation de la Machine Virtuelle
 ## Étape 1 : Création d'une Nouvelle Machine Virtuelle
 1. **Ouvrez VirtualBox** et cliquez sur le bouton `Nouveau` pour créer une nouvelle machine virtuelle.
-BLOC:
 2. **Configuration de la machine virtuelle** :
    - **Nom** : `Born2BeRoot`
    - **Dossier de la machine** : Choisissez un emplacement approprié sur votre système.
    - **Type** : `Linux`
    - **Version** : `Debian (64-bit)`
-end
 3. Cliquez sur `Suivant` pour continuer.
 Etape 2 : Allocation de la Mémoire Vive (RAM)
 1. **Définissez la taille de la mémoire** à allouer à la machine virtuelle :
@@ -19,19 +17,19 @@ Etape 3 : Création du Disque Dur Virtuel
    - Sélectionnez `VDI (VirtualBox Disk Image)` et cliquez sur `Suivant`.
 3. **Stockage sur disque physique** :
    - Choisissez `Alloué dynamiquement` pour que le fichier du disque dur n'occupe que l'espace réellement utilisé sur votre disque physique. Cliquez sur `Suivant`.
-BLOC:
+CODE:
 4. **Taille et emplacement du fichier du disque dur virtuel** :
    - **Taille** : 12 Go {Ou 30.8 pour B}
    - **Emplacement** : Laissez l'emplacement par défaut ou choisissez un autre emplacement si nécessaire.
    - Cliquez sur `Créer` pour finaliser la création du disque dur virtuel.
 end
 Etape 4 : Configuration du Stockage de la Machine Virtuelle
-BLOC:
+CODE:
 1. **Accédez aux paramètres de la machine virtuelle** :
    - Sélectionnez la machine virtuelle `Born2BeRoot` dans VirtualBox.
    - Cliquez sur `Configuration`.
 end
-BLOC:
+CODE:
 2. **Ajout de l'image ISO de Debian** :
    - Dans le menu de gauche, cliquez sur `Stockage`.
    - Sous `Contrôleur : IDE`, cliquez sur l'icône du disque avec un signe plus pour ajouter un lecteur optique.
